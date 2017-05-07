@@ -123,8 +123,8 @@ class ItemDetailView : RelativeLayout {
 			source.readLongArray(collapsedIds)
 		}
 
-		constructor(superState: Parcelable) : super(superState) {
-		}
+		constructor(superState: Parcelable) : super(superState)
+
 
 		override fun writeToParcel(out: Parcel, flags: Int) {
 			super.writeToParcel(out, flags)

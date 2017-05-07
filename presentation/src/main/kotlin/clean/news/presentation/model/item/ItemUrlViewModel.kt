@@ -3,9 +3,7 @@ package clean.news.presentation.model.item
 import clean.news.core.entity.Item
 import clean.news.presentation.inject.ScreenScope
 import clean.news.presentation.model.StoreModel
-import clean.news.presentation.model.item.ItemUrlViewModel.Action.GoBack
-import clean.news.presentation.model.item.ItemUrlViewModel.Action.GoToDetails
-import clean.news.presentation.model.item.ItemUrlViewModel.Action.Share
+import clean.news.presentation.model.item.ItemUrlViewModel.Action.*
 import clean.news.presentation.model.item.ItemUrlViewModel.State
 import clean.news.presentation.navigation.NavigationFactory
 import clean.news.presentation.navigation.NavigationFactory.ItemUrlScreen
@@ -39,12 +37,12 @@ class ItemUrlViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Reducer
 
-	private fun reducer() = Reducer { state: State, action: Any -> state }
+	private fun reducer() = Reducer { state: State, _: Any -> state }
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Middleware
 
-	private fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
+	private fun navigationMiddleware() = Middleware { _: Store<State>, action: Any, next: Dispatcher ->
 		val result = next.dispatch(action)
 		when (action) {
 			is GoBack -> navService.goBack()

@@ -4,10 +4,7 @@ import clean.news.app.usecase.item.GetChildren
 import clean.news.core.entity.Item
 import clean.news.presentation.inject.ScreenScope
 import clean.news.presentation.model.StoreModel
-import clean.news.presentation.model.item.ItemDetailViewModel.Action.GoBack
-import clean.news.presentation.model.item.ItemDetailViewModel.Action.GoToUrl
-import clean.news.presentation.model.item.ItemDetailViewModel.Action.Share
-import clean.news.presentation.model.item.ItemDetailViewModel.Action.ShowChildren
+import clean.news.presentation.model.item.ItemDetailViewModel.Action.*
 import clean.news.presentation.model.item.ItemDetailViewModel.State
 import clean.news.presentation.navigation.NavigationFactory
 import clean.news.presentation.navigation.NavigationFactory.ItemDetailScreen
@@ -66,7 +63,7 @@ class ItemDetailViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Epic
 
-	private fun epic() = Epic { actions: Observable<out Any>, store: Store<State> ->
+	private fun epic() = Epic { actions: Observable<out Any>, _: Store<State> ->
 		actions.ofType(Action.GetChildren::class.java)
 				.flatMap {
 					getChildren.execute(GetChildren.Request(it.item))
@@ -78,7 +75,7 @@ class ItemDetailViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Nav
 
-	private fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
+	private fun navigationMiddleware() = Middleware { _: Store<State>, action: Any, next: Dispatcher ->
 		val result = next.dispatch(action)
 		when (action) {
 			is GoBack -> navService.goBack()

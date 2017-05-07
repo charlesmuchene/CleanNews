@@ -36,13 +36,9 @@ class SceneKeyChanger(private val activity: Activity) : KeyChanger {
 		val transition = if (destination is WithTransition) {
 			destination.createTransition(outgoingState?.getKey(), incomingState.getKey(), direction)
 		}
-		else if (origin is WithTransition) {
-			origin.createTransition(outgoingState?.getKey(), incomingState.getKey(), direction)
-		}
-		else if (outgoingState != null) {
+		else (origin as? WithTransition)?.createTransition(outgoingState?.getKey(), incomingState.getKey(), direction) ?: if (outgoingState != null) {
 			AutoTransition()
-		}
-		else {
+		} else {
 			null
 		}
 

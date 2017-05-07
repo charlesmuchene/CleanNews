@@ -3,9 +3,7 @@ package clean.news.presentation.model.item
 import clean.news.app.usecase.item.GetItemsByListType
 import clean.news.core.entity.Item
 import clean.news.presentation.model.StoreModel
-import clean.news.presentation.model.item.ItemListViewModel.Action.GoToDetail
-import clean.news.presentation.model.item.ItemListViewModel.Action.GoToUrl
-import clean.news.presentation.model.item.ItemListViewModel.Action.ShowItems
+import clean.news.presentation.model.item.ItemListViewModel.Action.*
 import clean.news.presentation.model.item.ItemListViewModel.State
 import clean.news.presentation.navigation.NavigationFactory
 import clean.news.presentation.navigation.NavigationService
@@ -60,7 +58,7 @@ class ItemListViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Epic
 
-	private fun epic() = Epic { actions: Observable<out Any>, store: Store<State> ->
+	private fun epic() = Epic { actions: Observable<out Any>, _: Store<State> ->
 		actions.ofType(Action.GetItems::class.java)
 				.flatMap {
 					getItemsByListType.execute(GetItemsByListType.Request(listType))
@@ -72,7 +70,7 @@ class ItemListViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Navigation Middleware
 
-	private fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
+	private fun navigationMiddleware() = Middleware { _: Store<State>, action: Any, next: Dispatcher ->
 		val result = next.dispatch(action)
 		when (action) {
 			is GoToUrl -> navService.goTo(navFactory.url(action.item))
